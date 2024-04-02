@@ -14,6 +14,13 @@ module AcceptanceTests =
         let app = buildApp ()
         let client = app.CreateClient()
 
-        let result = client.GetAsync("\hello").Result
-        let content = (result.Content.ReadAsStringAsync()).Result
-        test <@ content = "Hello world!" @>
+        let result =
+            task {
+                let! response = client.GetAsync("\hello")
+                let! content = response.Content.ReadAsStringAsync()
+                return content
+            }
+            |> Async.AwaitTask
+            |> Async.RunSynchronously
+
+        test <@ result = "Hello world!" @>
