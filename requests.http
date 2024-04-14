@@ -1,1 +1,5 @@
 ﻿GET https://localhost:7280/
+
+###
+
+GET https://localhost:7280/jo/lists
